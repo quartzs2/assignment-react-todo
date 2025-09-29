@@ -1,0 +1,98 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.advice {
+  margin-bottom: 1rem;
+  color: gray;
+}
+
+.advice p:first-child {
+  font-style: italic;
+  margin-bottom: 0.2rem;
+}
+
+.advice p {
+  margin: 0;
+}
+
+.clock {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.stopWatch {
+  margin: 1rem 0 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: gray;
+}
+
+button {
+  background-color: aliceblue;
+  border: 1px solid skyblue;
+  border-radius: 6px;
+  font-size: 1.1rem;
+}
+
+.todo-form {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+input {
+  padding: 0.2rem 1rem;
+  font-size: 1.1rem;
+}
+
+ul {
+  padding: 1rem;
+  list-style: none;
+}
+
+ul li {
+  padding: 0.2rem;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid skyblue;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.todo-content {
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.todo-content p:first-child {
+  font-size: 1.1rem;
+}
+
+.todo-content p {
+  margin-bottom: 0.2rem;
+}
+
+.todo-btns {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.edit-form {
+  display: flex;
+  align-items: center;
+}
+
+.active {
+  background-color: rgb(195, 233, 249);
+}
