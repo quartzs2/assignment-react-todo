@@ -1,17 +1,22 @@
-import { useEffect, useState } from 'react';
-import useFetch from './hooks/useFetch';
-import TodoList from './components/TodoList';
-import formatTime from './utils/formatTime';
-import './App.css';
+import { useEffect, useState } from "react";
+
+import TodoList from "./components/TodoList";
+import "./App.css";
+import { Suspense, ErrorBoundary } from "@suspensive/react";
+import { formattedTime } from "./utils/formattedTime";
+import Advice from "./components/Advice";
+
+const CLOCK_INTERVAL_MS = 1000;
 
 function App() {
-  const { data, isLoading, error } = useFetch(
-    'https://korean-advice-open-api.vercel.app/api/advice'
-  );
-  const [time, setTime] = useState(formatTime(new Date()));
+  const initialTime = formattedTime({ date: new Date() });
+  const [time, setTime] = useState(initialTime);
 
   useEffect(() => {
-    const intervalId = setInterval(() => setTime(formatTime(new Date())), 1000);
+    const intervalId = setInterval(
+      () => setTime(formattedTime({ date: new Date() })),
+      CLOCK_INTERVAL_MS
+    );
 
     return () => clearInterval(intervalId);
   }, []);
@@ -20,14 +25,11 @@ function App() {
     <>
       <header>
         <h1>오늘의 할 일 📜</h1>
-        {isLoading && <p>Loading...</p>}
-        {error && <p>error.message</p>}
-        {data && (
-          <div className="advice">
-            <p>{data.message}</p>
-            <p>-{data.author}-</p>
-          </div>
-        )}
+        <Suspense fallback={<p>Loading...</p>}>
+          <ErrorBoundary fallback={({ error }) => <p>Error: {error.message}</p>}>
+            <Advice />
+          </ErrorBoundary>
+        </Suspense>
       </header>
       <main>
         <section className="clock">

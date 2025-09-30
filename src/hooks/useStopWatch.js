@@ -1,31 +1,39 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react";
 
-function useStopWatch() {
+const STOPWATCH_INTERVAL_MS = 1000;
+
+function useStopWatch({ selectedTodo, onTick }) {
   const [time, setTime] = useState(0);
   const [isStopWatchStart, setIsStopWatchStart] = useState(false);
   const intervalIdRef = useRef(null);
 
-  const startStopWatch = () => {
-    intervalIdRef.current = setInterval(
-      () => setTime((prev) => prev + 1),
-      1000
-    );
-  };
-  const stopStopWatch = () => {
-    setTime(0);
+  const startStopWatch = useCallback(() => {
+    intervalIdRef.current = setInterval(() => setTime((prev) => prev + 1), STOPWATCH_INTERVAL_MS);
+  }, []);
+
+  const stopStopWatch = useCallback(() => {
     clearInterval(intervalIdRef.current);
     intervalIdRef.current = null;
-  };
-  const toggleStopWatch = () => {
+  }, []);
+
+  const toggleStopWatch = useCallback(() => {
     if (isStopWatchStart) stopStopWatch();
     else startStopWatch();
     setIsStopWatchStart((prev) => !prev);
-  };
+  }, [isStopWatchStart, startStopWatch, stopStopWatch]);
 
   useEffect(() => {
-    if (intervalIdRef.current) {
-      stopStopWatch();
+    if (selectedTodo && time > 0) {
+      onTick?.(selectedTodo);
     }
+  }, [time, selectedTodo, onTick]);
+
+  useEffect(() => {
+    return () => {
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current);
+      }
+    };
   }, []);
 
   return {
